@@ -20,7 +20,7 @@ window = sg.Window(
 )
 
 # Instance a new Farm Script
-farmer = lib.FarmScript(routines.mining_routine)
+farmer = lib.FarmScript(routines.advanced_mining_routine)
 
 # Event Loop to process "events" and get the "values" of the inputs
 while True:

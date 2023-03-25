@@ -1,0 +1,7 @@
+----------------Requirements-----------------
+
+PySimpleGUI
+pyautogui
+Pillow
+opencv-python
+pynput

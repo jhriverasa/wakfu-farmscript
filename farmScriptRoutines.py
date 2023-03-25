@@ -6,15 +6,34 @@
 ##    pyautogui.easeInElastic ->   Rubber band at the end
 
 import time
+import math
 import pyautogui as auto  ##Allows to control mouse + keyboard
 
 from farmScriptLib import ScriptRoutine
 
-
 screenResX, screenResY = auto.size()
+IMG_PATH = "img" + "\\"
 
 
-def mining_steps():
+def getClosestPoint(pointlist):
+    ##Since the character is always in the "center of the screen" when you're moving
+    ## is possible to approximate the distance to resource and improve the harvesting route
+    # A long distance (distance of the diagonal in pixels)
+    shortestDistance = math.dist([0, screenResY], [screenResX, 0])
+    closestPoint = None
+    centerOfScreen = [int(screenResX / 2), int(screenResY / 2)]
+
+    for point in pointlist:
+        curDistance = math.dist(centerOfScreen, auto.center(point))
+        if curDistance < shortestDistance:
+            shortestDistance = curDistance
+            closestPoint = point
+
+    return auto.center(closestPoint)
+
+
+###-----------------Simple Mining-------------------->
+def simple_mining_steps():
     # Simple right click (press+release)
     auto.rightClick(interval=0.125)
     time.sleep(0.2)
@@ -26,20 +45,64 @@ def mining_steps():
     auto.leftClick(duration=0.1)
 
 
-def mining_on_press(key):
+def simple_mining_on_press(key):
     return
 
 
-def mining_on_release(key):
+def simple_mining_on_release(key):
     try:
         if str(key) == "Key.f2":
-            mining_steps()
+            simple_mining_steps()
     except:
         print("ERROR ON_RELEASE")
+
+
+###----------------Advanced Mining------------------------>
+def advanced_mining_steps():
+    # Locate all ores
+    oreLocations = auto.locateAllOnScreen(
+        IMG_PATH + "bronze-nugget-ore.png", confidence=0.86
+    )  # confidence 90% is tested with 90% accuracy
+
+    oreLocations = list(oreLocations)
+
+    if len(oreLocations) > 0:
+        closestPoint = getClosestPoint(oreLocations)
+        auto.moveTo(closestPoint.x, closestPoint.y)
+         # Simple right click (press+release)
+        auto.rightClick(interval=0.125)
+        time.sleep(0.5)
+
+        # move pointer and click again
+        collectIconLocation = auto.locateCenterOnScreen(
+            IMG_PATH + "collect-me.png", confidence=0.98
+        )
+        if collectIconLocation != None:
+            auto.moveTo(collectIconLocation.x, collectIconLocation.y)
+            auto.leftClick(duration=0.1)
+        else:
+            print("Collect Icon not found")
+    else:
+        print("Ore not found")
+
+   
+
+
+def advanced_mining_on_press(key):
+    return
+
+
+def advanced_mining_on_release(key):
+    if str(key) == "Key.f2":
+        advanced_mining_steps()
 
 
 ########################################################################
 ############################### ROUTINES  ##############################
 ########################################################################
-
-mining_routine = ScriptRoutine(on_press=mining_on_press, on_release=mining_on_release)
+simple_mining_routine = ScriptRoutine(
+    on_press=simple_mining_on_press, on_release=simple_mining_on_release
+)
+advanced_mining_routine = ScriptRoutine(
+    on_press=advanced_mining_on_press, on_release=advanced_mining_on_release
+)
