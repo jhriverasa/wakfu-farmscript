@@ -61,8 +61,9 @@ def simple_mining_on_release(key):
 def advanced_mining_steps():
     # Locate all ores
     oreLocations = auto.locateAllOnScreen(
-        IMG_PATH + "bronze-nugget-ore.png", confidence=0.86
-    )  # confidence 90% is tested with 90% accuracy
+        IMG_PATH + "x.png", confidence=0.86
+    )  # Based on practical results 0.86 of confidence performs really well
+
 
     oreLocations = list(oreLocations)
 
@@ -75,7 +76,7 @@ def advanced_mining_steps():
 
         # move pointer and click again
         collectIconLocation = auto.locateCenterOnScreen(
-            IMG_PATH + "collect-me.png", confidence=0.98
+            IMG_PATH + "minning-collect-icon.png", confidence=0.97
         )
         if collectIconLocation != None:
             auto.moveTo(collectIconLocation.x, collectIconLocation.y)
@@ -93,8 +94,11 @@ def advanced_mining_on_press(key):
 
 
 def advanced_mining_on_release(key):
-    if str(key) == "Key.f2":
-        advanced_mining_steps()
+    try:
+        if str(key) == "Key.f2":
+            advanced_mining_steps()
+    except:
+        print("ERROR ON_RELEASE")
 
 
 ########################################################################
