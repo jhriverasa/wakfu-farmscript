@@ -9,8 +9,6 @@ import time
 import math
 import pyautogui as auto  ##Allows to control mouse + keyboard
 
-from farmScriptLib import ScriptRoutine
-
 screenResX, screenResY = auto.size()
 IMG_PATH = "img" + "\\"
 
@@ -32,8 +30,12 @@ def getClosestPoint(pointlist):
     return auto.center(closestPoint)
 
 
+########################################################################
+############################### ROUTINES  ##############################
+########################################################################
+
 ###-----------------Simple Mining-------------------->
-def simple_mining_steps():
+def simple_mining_actions():
     # Simple right click (press+release)
     auto.rightClick(interval=0.125)
     time.sleep(0.2)
@@ -45,32 +47,19 @@ def simple_mining_steps():
     auto.leftClick(duration=0.1)
 
 
-def simple_mining_on_press(key):
-    return
-
-
-def simple_mining_on_release(key):
-    try:
-        if str(key) == "Key.f2":
-            simple_mining_steps()
-    except:
-        print("ERROR ON_RELEASE")
-
-
 ###----------------Advanced Mining------------------------>
-def advanced_mining_steps():
+def advanced_mining_actions():
     # Locate all ores
     oreLocations = auto.locateAllOnScreen(
         IMG_PATH + "x.png", confidence=0.86
     )  # Based on practical results 0.86 of confidence performs really well
-
 
     oreLocations = list(oreLocations)
 
     if len(oreLocations) > 0:
         closestPoint = getClosestPoint(oreLocations)
         auto.moveTo(closestPoint.x, closestPoint.y)
-         # Simple right click (press+release)
+         # Simple right click 
         auto.rightClick(interval=0.125)
         time.sleep(0.5)
 
@@ -86,27 +75,5 @@ def advanced_mining_steps():
     else:
         print("Ore not found")
 
-   
 
 
-def advanced_mining_on_press(key):
-    return
-
-
-def advanced_mining_on_release(key):
-    try:
-        if str(key) == "Key.f2":
-            advanced_mining_steps()
-    except:
-        print("ERROR ON_RELEASE")
-
-
-########################################################################
-############################### ROUTINES  ##############################
-########################################################################
-simple_mining_routine = ScriptRoutine(
-    on_press=simple_mining_on_press, on_release=simple_mining_on_release
-)
-advanced_mining_routine = ScriptRoutine(
-    on_press=advanced_mining_on_press, on_release=advanced_mining_on_release
-)

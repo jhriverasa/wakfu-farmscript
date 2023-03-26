@@ -1,7 +1,6 @@
 import PySimpleGUI as sg  # Simple GUI for Python
-
-import farmScriptLib as lib
-import farmScriptRoutines as routines
+import hotkeymgr as hk
+from routines import advanced_mining_actions
 
 
 # Setup the simple window
@@ -19,8 +18,14 @@ window = sg.Window(
     title="Wakfu FarmBot 0.1", layout=layout, size=(275, 50), element_justification="c"
 )
 
-# Instance a new Farm Script
-farmer = lib.FarmScript(routines.advanced_mining_routine)
+# Instance HotkeyManager and its correponding Listener
+globalHotkeyManager = hk.HotkeyManager()
+hotkeyListener = hk.HotkeyListener(globalHotkeyManager.runHotkeyCallback)
+
+# Bind the action to a hotkey
+if not globalHotkeyManager.isBound("Key.f2"):
+    globalHotkeyManager.setBinding("Key.f2", advanced_mining_actions)
+
 
 # Event Loop to process "events" and get the "values" of the inputs
 while True:
@@ -29,12 +34,12 @@ while True:
         break
 
     if event == "button_start":
-        farmer.startScript()
+        hotkeyListener.startScript()
         window["text_status"].update(
             "ACTIVE", text_color="#000000", background_color="#50C878"
         )
     if event == "button_stop":
-        farmer.stopScript()
+        hotkeyListener.stopScript()
         window["text_status"].update(
             "STOPPED", text_color="#000000", background_color="#C70039"
         )
