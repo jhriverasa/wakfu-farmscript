@@ -1,6 +1,6 @@
 import PySimpleGUI as sg  # Simple GUI for Python
 
-import Constants as const
+import constants as const
 
 sg.theme("Black")
 

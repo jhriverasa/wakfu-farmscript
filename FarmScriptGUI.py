@@ -1,7 +1,7 @@
 import PySimpleGUI as sg  # Simple GUI for Python
 
-import GUIElements
-import Constants as const
+import guiElements
+import constants as const
 import core
 
 
@@ -10,9 +10,9 @@ sg.theme("Black")
 
 
 layout = [
-    [GUIElements.frameSelectJobAndZone],
-    [GUIElements.frameAssignAKey],
-    [GUIElements.layoutStatusAndStartStopBtns],
+    [guiElements.frameSelectJobAndZone],
+    [guiElements.frameAssignAKey],
+    [guiElements.layoutStatusAndStartStopBtns],
 ]
 
 
@@ -43,7 +43,7 @@ while True:
 
     if event == "combo_zone":
         core.onChange_Zone_Combo(event, values, window)
-        
+
     if event == "combo_job":
         core.onChange_Job_Combo(event, values, window)
 

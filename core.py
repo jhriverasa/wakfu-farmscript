@@ -1,8 +1,8 @@
-import Constants as const
+import constants as const
 
 #### SHOULD NOT ALLOW TO CLICK START WHEN ACTIVE..
 import hotkeymgr as hk
-import FarmScriptState as st
+import farmScriptState as st
 import routines
 
 # Create a shared (global) state

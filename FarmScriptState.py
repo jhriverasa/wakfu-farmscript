@@ -1,4 +1,4 @@
-import Constants as cts
+import constants as cts
 
 
 class appState:
