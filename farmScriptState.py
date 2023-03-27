@@ -6,11 +6,13 @@ class appState:
         # This should define the initial state of the app
         self.selectedJob = None
         self.selectedZone = None
+        self.selectedResource = None
         self.selectedKey = None
         self.status = cts.CONST_STATUS_WAITING
         self.isStartButtonEnabled = False
         self.isStopButtonEnabled = False
         self.isZoneComboEnabled = False
+        self.isResourceComboEnabled = False
         self.isKeyComboEnabled = False
 
     def __str__(self) -> str:
@@ -18,11 +20,13 @@ class appState:
             {
                 self.selectedJob,
                 self.selectedZone,
+                self.selectedResource,
                 self.selectedKey,
                 self.status,
                 self.isStartButtonEnabled,
                 self.isStopButtonEnabled,
                 self.isZoneComboEnabled,
+                self.isResourceComboEnabled,
                 self.isKeyComboEnabled,
             }
         )

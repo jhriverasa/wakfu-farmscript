@@ -2,10 +2,11 @@ import constants as const
 
 import hotkeymgr as hk
 import farmScriptState as st
-import routines
 
 # Create a shared (global) state
 globalState = st.appState()
+
+import routines  # routines depends on the global state so the import is after (FIX THIS AFTER)
 
 
 # Instance HotkeyManager and its correponding Listener
@@ -18,11 +19,13 @@ hotkeyListener = hk.HotkeyListener(globalHotkeyManager.runHotkeyCallback)
 
 
 def onClick_Start_Button(e, values, window):
+    print(globalState)
     # is everything selected?
     if (
         globalState.selectedJob != None
-        and globalState.selectedKey != None
+        and globalState.selectedResource != None
         and globalState.selectedZone != None
+        and globalState.selectedKey != None
     ):
         hotkeyListener.startScript()
         newStatus = const.CONST_STATUS_ACTIVE
@@ -31,6 +34,10 @@ def onClick_Start_Button(e, values, window):
             newStatus, text_color="#000000", background_color="#50C878"
         )
         globalState.status = newStatus
+
+        window["combo_key"].update(disabled=True)
+        globalState.isKeyComboEnabled = False
+
         startSelectedScript()
 
         # disable start
@@ -58,6 +65,10 @@ def onClick_Stop_Button(e, values, window):
     window["button_start"].update(disabled=False)
     globalState.isStartButtonEnabled = True
 
+    #enable key combo
+    window["combo_key"].update(disabled=False)
+    globalState.isKeyComboEnabled = True
+
     # Clear selected hotkey
     globalHotkeyManager.clearBinding(globalState.selectedKey)
 
@@ -73,6 +84,18 @@ def onChange_Job_Combo(e, values, window):
 def onChange_Zone_Combo(e, values, window):
     selectedZone = values["combo_zone"]
     globalState.selectedZone = selectedZone
+
+    ## This should activate resource-combo and load values depending on selected zone
+    if selectedZone == const.CONST_ZONE_ASTRUB:
+        window["combo_resource"].update(
+            disabled=False, values=const.CONST_ZONE_RESOURCES_ASTRUB
+        )
+        globalState.isResourceComboEnabled = True
+
+
+def onChange_Resource_Combo(e, values, window):
+    selectedResource = values["combo_resource"]
+    globalState.selectedResource = selectedResource
     if globalState.selectedKey == None:  # Activate Key combo
         window["combo_key"].update(disabled=False)
         globalState.isKeyComboEnabled = True

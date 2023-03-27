@@ -8,9 +8,12 @@
 import time
 import math
 import pyautogui as auto  ##Allows to control mouse + keyboard
+from core import globalState
 
 screenResX, screenResY = auto.size()
-IMG_PATH = "img" + "\\"
+IMG_PATH = "img\\"
+MINER_RES_PATH = IMG_PATH + "miner_res\\"
+ICONS_PATH = IMG_PATH + "icons\\"
 
 
 def getClosestPoint(pointlist):
@@ -30,6 +33,10 @@ def getClosestPoint(pointlist):
     return auto.center(closestPoint)
 
 
+def getImgNameFromResourceConst(resConst: str):
+    return resConst.replace(" ", "-")+'.png'
+
+
 ########################################################################
 ############################### ROUTINES  ##############################
 ########################################################################
@@ -37,13 +44,13 @@ def getClosestPoint(pointlist):
 
 ###-----------------Simple Mining-------------------->
 def simple_mining_actions():
-    # Simple right click 
+    # Simple right click
     auto.rightClick(interval=0.125)
     time.sleep(0.2)
 
     # move pointer to mining icon and click again
     collectIconLocation = auto.locateCenterOnScreen(
-        IMG_PATH + "minning-collect-icon.png", confidence=0.97
+        ICONS_PATH + "minning-collect-icon.png", confidence=0.97
     )
     if collectIconLocation != None:
         auto.moveTo(collectIconLocation.x, collectIconLocation.y)
@@ -54,9 +61,11 @@ def simple_mining_actions():
 
 ###----------------Advanced Mining------------------------>
 def advanced_mining_actions():
+
     # Locate all ores
     oreLocations = auto.locateAllOnScreen(
-        IMG_PATH + "x.png", confidence=0.86
+        MINER_RES_PATH + getImgNameFromResourceConst(globalState.selectedResource),
+        confidence=0.86,
     )  # Based on practical results 0.86 of confidence performs really well
 
     oreLocations = list(oreLocations)
@@ -70,12 +79,12 @@ def advanced_mining_actions():
 
         # move pointer and click again
         collectIconLocation = auto.locateCenterOnScreen(
-            IMG_PATH + "minning-collect-icon.png", confidence=0.97
+            ICONS_PATH + "minning-harvest-icon.png", confidence=0.97
         )
         if collectIconLocation != None:
             auto.moveTo(collectIconLocation.x, collectIconLocation.y)
             auto.leftClick(duration=0.1)
         else:
-            print("Collect Icon not found")
+            print("Minning Icon not found")
     else:
-        print("Ore not found")
+        print("Resource not found")

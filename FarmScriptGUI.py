@@ -1,9 +1,8 @@
 import PySimpleGUI as sg  # Simple GUI for Python
 import core
-
 import guiElements
-import constants as const
 
+import constants as const
 
 
 # Setup the simple window
@@ -12,6 +11,7 @@ sg.theme("Black")
 
 layout = [
     [guiElements.frameSelectJobAndZone],
+    [guiElements.frameSelectResource],
     [guiElements.frameAssignAKey],
     [guiElements.layoutStatusAndStartStopBtns],
 ]
@@ -21,7 +21,7 @@ layout = [
 window = sg.Window(
     title="Wakfu FarmBot 0.1",
     layout=layout,
-    size=(400, 300),
+    size=(400, 350),
     element_justification="c",
     element_padding=10,
 )
@@ -43,6 +43,9 @@ while True:
 
     if event == "combo_zone":
         core.onChange_Zone_Combo(event, values, window)
+
+    if event == "combo_resource":
+        core.onChange_Resource_Combo(event, values, window)
 
     if event == "combo_job":
         core.onChange_Job_Combo(event, values, window)

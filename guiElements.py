@@ -7,6 +7,7 @@ sg.theme("Black")
 
 frameSelectJobAndZone = sg.Frame(
     title="< Select profession and Zone >",
+    expand_x=True,
     layout=[
         [
             sg.Combo(
@@ -19,6 +20,7 @@ frameSelectJobAndZone = sg.Frame(
                     const.CONST_JOB_TRAPPER,
                 ],
                 readonly=True,
+                expand_x=True,
                 enable_events=True,
                 key="combo_job",
             ),
@@ -29,6 +31,7 @@ frameSelectJobAndZone = sg.Frame(
                     const.CONST_ZONE_BRAKMAR,
                 ],
                 readonly=True,
+                expand_x=True,
                 enable_events=True,
                 key="combo_zone",
                 disabled=not globalState.isZoneComboEnabled,
@@ -37,8 +40,26 @@ frameSelectJobAndZone = sg.Frame(
     ],
 )
 
+frameSelectResource = sg.Frame(
+    title="< Select resource >",
+    expand_x=True,
+    layout=[
+        [
+            sg.Combo(
+                values=[],  # This one depends on the zone
+                readonly=True,
+                enable_events=True,
+                key="combo_resource",
+                disabled=not globalState.isResourceComboEnabled,
+                expand_x=True,
+            ),
+        ]
+    ],
+)
+
 frameAssignAKey = sg.Frame(
     title="< Assign a key >",
+    expand_x=True,
     layout=[
         [
             sg.Combo(

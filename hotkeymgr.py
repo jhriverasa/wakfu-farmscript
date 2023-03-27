@@ -1,5 +1,6 @@
 from pynput import keyboard
 
+
 def doNothing():
     pass
 
