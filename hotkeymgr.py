@@ -1,6 +1,4 @@
 from pynput import keyboard
-import time
-
 
 def doNothing():
     pass
@@ -53,6 +51,9 @@ class HotkeyManager(metaclass=Singleton):
     # Replace the current action for a key
     def setBinding(self, key, callback: callable):
         self._bindings[key] = callback
+
+    def clearBinding(self, key):
+        self._bindings[key] = doNothing
 
     # Is a key already bound?
     def isBound(self, key):

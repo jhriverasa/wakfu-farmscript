@@ -8,6 +8,21 @@ class appState:
         self.selectedZone = None
         self.selectedKey = None
         self.status = cts.CONST_STATUS_WAITING
+        self.isStartButtonEnabled = False
+        self.isStopButtonEnabled = False
+        self.isZoneComboEnabled = False
+        self.isKeyComboEnabled = False
 
     def __str__(self) -> str:
-        return str({self.selectedJob, self.selectedZone, self.selectedKey, self.status})
+        return str(
+            {
+                self.selectedJob,
+                self.selectedZone,
+                self.selectedKey,
+                self.status,
+                self.isStartButtonEnabled,
+                self.isStopButtonEnabled,
+                self.isZoneComboEnabled,
+                self.isKeyComboEnabled,
+            }
+        )

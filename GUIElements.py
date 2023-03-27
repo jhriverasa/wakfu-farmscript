@@ -1,5 +1,5 @@
 import PySimpleGUI as sg  # Simple GUI for Python
-
+from core import globalState
 import constants as const
 
 sg.theme("Black")
@@ -31,6 +31,7 @@ frameSelectJobAndZone = sg.Frame(
                 readonly=True,
                 enable_events=True,
                 key="combo_zone",
+                disabled=not globalState.isZoneComboEnabled,
             ),
         ]
     ],
@@ -53,6 +54,7 @@ frameAssignAKey = sg.Frame(
                 readonly=True,
                 enable_events=True,
                 key="combo_key",
+                disabled=not globalState.isKeyComboEnabled,
             ),
         ]
     ],
@@ -61,7 +63,11 @@ frameAssignAKey = sg.Frame(
 layoutStatusAndStartStopBtns = (
     [
         sg.Text(text=const.CONST_STATUS_WAITING, enable_events=True, key="text_status"),
-        sg.Button("Start", key="button_start"),
-        sg.Button("Stop", key="button_stop"),
+        sg.Button(
+            "Start", disabled=not globalState.isStartButtonEnabled, key="button_start"
+        ),
+        sg.Button(
+            "Stop", disabled=not globalState.isStopButtonEnabled, key="button_stop"
+        ),
     ],
 )

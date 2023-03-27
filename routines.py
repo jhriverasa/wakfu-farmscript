@@ -37,11 +37,11 @@ def getClosestPoint(pointlist):
 
 ###-----------------Simple Mining-------------------->
 def simple_mining_actions():
-    # Simple right click (press+release)
+    # Simple right click 
     auto.rightClick(interval=0.125)
     time.sleep(0.2)
 
-    # move pointer and click again
+    # move pointer to mining icon and click again
     collectIconLocation = auto.locateCenterOnScreen(
         IMG_PATH + "minning-collect-icon.png", confidence=0.97
     )

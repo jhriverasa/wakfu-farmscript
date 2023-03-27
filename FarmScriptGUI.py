@@ -1,8 +1,9 @@
 import PySimpleGUI as sg  # Simple GUI for Python
+import core
 
 import guiElements
 import constants as const
-import core
+
 
 
 # Setup the simple window
@@ -31,7 +32,6 @@ while True:
     event, values = window.read()
     if event == sg.WIN_CLOSED:  # if user closes windows
         break
-
     if event == "button_start":
         core.onClick_Start_Button(event, values, window)
 
