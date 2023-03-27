@@ -34,6 +34,7 @@ def getClosestPoint(pointlist):
 ############################### ROUTINES  ##############################
 ########################################################################
 
+
 ###-----------------Simple Mining-------------------->
 def simple_mining_actions():
     # Simple right click (press+release)
@@ -41,10 +42,14 @@ def simple_mining_actions():
     time.sleep(0.2)
 
     # move pointer and click again
-    curPosX, curPosY = auto.position()
-    auto.moveTo(curPosX, curPosY - 48, 0.125)
-
-    auto.leftClick(duration=0.1)
+    collectIconLocation = auto.locateCenterOnScreen(
+        IMG_PATH + "minning-collect-icon.png", confidence=0.97
+    )
+    if collectIconLocation != None:
+        auto.moveTo(collectIconLocation.x, collectIconLocation.y)
+        auto.leftClick(duration=0.1)
+    else:
+        print("Collect Icon not found")
 
 
 ###----------------Advanced Mining------------------------>
@@ -59,7 +64,7 @@ def advanced_mining_actions():
     if len(oreLocations) > 0:
         closestPoint = getClosestPoint(oreLocations)
         auto.moveTo(closestPoint.x, closestPoint.y)
-         # Simple right click 
+        # Simple right click
         auto.rightClick(interval=0.125)
         time.sleep(0.5)
 
@@ -74,6 +79,3 @@ def advanced_mining_actions():
             print("Collect Icon not found")
     else:
         print("Ore not found")
-
-
-

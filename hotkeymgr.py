@@ -58,7 +58,7 @@ class HotkeyManager(metaclass=Singleton):
     def isBound(self, key):
         return not (self._bindings[key] is doNothing)
 
-    # Calls the function according to the key pressed 
+    # Calls the function according to the key pressed
     def runHotkeyCallback(self, key):
         try:
             srtKey = str(key)
