@@ -14,6 +14,7 @@ screenResX, screenResY = auto.size()
 IMG_PATH = "img\\"
 MINER_RES_PATH = IMG_PATH + "miner_res\\"
 ICONS_PATH = IMG_PATH + "icons\\"
+FARMER_RES_PATH = IMG_PATH + "farmer_res\\"
 
 
 def getClosestPoint(pointlist):
@@ -34,7 +35,7 @@ def getClosestPoint(pointlist):
 
 
 def getImgNameFromResourceConst(resConst: str):
-    return resConst.replace(" ", "-")+'.png'
+    return resConst.replace(" ", "-") + ".png"
 
 
 ########################################################################
@@ -61,7 +62,6 @@ def simple_mining_actions():
 
 ###----------------Advanced Mining------------------------>
 def advanced_mining_actions():
-
     # Locate all ores
     oreLocations = auto.locateAllOnScreen(
         MINER_RES_PATH + getImgNameFromResourceConst(globalState.selectedResource),
@@ -86,5 +86,43 @@ def advanced_mining_actions():
             auto.leftClick(duration=0.1)
         else:
             print("Minning Icon not found")
+    else:
+        print("Resource not found")
+
+
+def advanced_farming_actions():
+    # Locate all ores
+    resourceLocation = auto.locateAllOnScreen(
+        FARMER_RES_PATH + getImgNameFromResourceConst(globalState.selectedResource),
+        confidence=0.86,
+    )  # Based on practical results 0.86 of confidence performs really well
+
+    resourceLocation = list(resourceLocation)
+
+    if len(resourceLocation) > 0:
+        closestPoint = getClosestPoint(resourceLocation)
+        auto.moveTo(closestPoint.x, closestPoint.y)
+        # Simple right click
+        auto.rightClick(interval=0.125)
+        time.sleep(0.5)
+
+        # move pointer and click again
+        collectIconLocation = auto.locateCenterOnScreen(
+            ICONS_PATH + "farming-reap-icon.png", confidence=0.97
+        )
+        if collectIconLocation != None:
+            auto.moveTo(collectIconLocation.x, collectIconLocation.y)
+            auto.leftClick(duration=0.1)
+        else:
+            # Try a different icon (since farming has two possibilities) #CHANGE THIS DISCRIMINATING BY RESOURCE
+            collectIconLocation = auto.locateCenterOnScreen(
+                ICONS_PATH + "farming-cut-icon.png", confidence=0.97
+            )
+            if collectIconLocation != None:
+                auto.moveTo(collectIconLocation.x, collectIconLocation.y)
+                auto.leftClick(duration=0.1)
+            else:
+                print("Farming Icon not found")
+
     else:
         print("Resource not found")

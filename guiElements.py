@@ -6,7 +6,7 @@ sg.theme("Black")
 
 
 frameSelectJobAndZone = sg.Frame(
-    title="< Select profession and Zone >",
+    title=const.CONST_GUI_FRAME_SELECTJOBANDZONE_TEXT,
     expand_x=True,
     layout=[
         [
@@ -41,7 +41,7 @@ frameSelectJobAndZone = sg.Frame(
 )
 
 frameSelectResource = sg.Frame(
-    title="< Select resource >",
+    title=const.CONST_GUI_FRAME_SELECTRESOURCE_TEXT,
     expand_x=True,
     layout=[
         [
@@ -58,7 +58,7 @@ frameSelectResource = sg.Frame(
 )
 
 frameAssignAKey = sg.Frame(
-    title="< Assign a key >",
+    title=const.CONST_GUI_FRAME_ASSIGNAKEY,
     expand_x=True,
     layout=[
         [
@@ -85,10 +85,14 @@ layoutStatusAndStartStopBtns = (
     [
         sg.Text(text=const.CONST_STATUS_WAITING, enable_events=True, key="text_status"),
         sg.Button(
-            "Start", disabled=not globalState.isStartButtonEnabled, key="button_start"
+            const.CONST_GUI_BUTTON_START_TEXT,
+            disabled=not globalState.isStartButtonEnabled,
+            key="button_start",
         ),
         sg.Button(
-            "Stop", disabled=not globalState.isStopButtonEnabled, key="button_stop"
+            const.CONST_GUI_BUTTON_STOP_TEXT,
+            disabled=not globalState.isStopButtonEnabled,
+            key="button_stop",
         ),
     ],
 )

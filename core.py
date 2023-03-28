@@ -65,7 +65,7 @@ def onClick_Stop_Button(e, values, window):
     window["button_start"].update(disabled=False)
     globalState.isStartButtonEnabled = True
 
-    #enable key combo
+    # enable key combo
     window["combo_key"].update(disabled=False)
     globalState.isKeyComboEnabled = True
 
@@ -79,18 +79,32 @@ def onChange_Job_Combo(e, values, window):
     if globalState.selectedZone == None:  # Activate Zone combo
         window["combo_zone"].update(disabled=False)
         globalState.isZoneComboEnabled = True
+    
+    #######Define the behavior where zone has been selected
 
 
 def onChange_Zone_Combo(e, values, window):
     selectedZone = values["combo_zone"]
     globalState.selectedZone = selectedZone
+    selectedJob = globalState.selectedJob
 
     ## This should activate resource-combo and load values depending on selected zone
+
+    # ASTRUB ZONE
     if selectedZone == const.CONST_ZONE_ASTRUB:
-        window["combo_resource"].update(
-            disabled=False, values=const.CONST_ZONE_RESOURCES_ASTRUB
-        )
-        globalState.isResourceComboEnabled = True
+        # MINER
+        if selectedJob == const.CONST_JOB_MINER:
+            window["combo_resource"].update(
+                disabled=False, values=const.CONST_ZONE_RESOURCES_MINER_ASTRUB
+            )
+            globalState.isResourceComboEnabled = True
+
+        # FARMER
+        if selectedJob == const.CONST_JOB_FARMER:
+            window["combo_resource"].update(
+                disabled=False, values=const.CONST_ZONE_RESOURCES_FARMER_ASTRUB
+            )
+            globalState.isResourceComboEnabled = True
 
 
 def onChange_Resource_Combo(e, values, window):
@@ -118,6 +132,7 @@ def onChange_Key_Combo(e, values, window):
 
 
 def startSelectedScript():
+    # Miner
     if (
         globalState.selectedJob == const.CONST_JOB_MINER
         and globalState.selectedZone == const.CONST_ZONE_ASTRUB
@@ -127,4 +142,16 @@ def startSelectedScript():
         globalHotkeyManager.setBinding(
             globalState.selectedKey,
             routines.advanced_mining_actions,  # simple_mining_actions#
+        )
+
+    # Farmer
+    if (
+        globalState.selectedJob == const.CONST_JOB_FARMER
+        and globalState.selectedZone == const.CONST_ZONE_ASTRUB
+        and globalState.selectedKey != None
+    ):
+        # Bind the action to a hotkey
+        globalHotkeyManager.setBinding(
+            globalState.selectedKey,
+            routines.advanced_farming_actions,
         )
