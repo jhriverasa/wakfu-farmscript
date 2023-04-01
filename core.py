@@ -19,7 +19,7 @@ hotkeyListener = hk.HotkeyListener(globalHotkeyManager.runHotkeyCallback)
 
 
 def onClick_Start_Button(e, values, window):
-    print(globalState)
+    
     # is everything selected?
     if (
         globalState.selectedJob != None
@@ -47,7 +47,8 @@ def onClick_Start_Button(e, values, window):
         # enable stop
         window["button_stop"].update(disabled=False)
         globalState.isStopButtonEnabled = True
-
+        
+    print(globalState)
 
 def onClick_Stop_Button(e, values, window):
     hotkeyListener.stopScript()
@@ -79,7 +80,7 @@ def onChange_Job_Combo(e, values, window):
     if globalState.selectedZone == None:  # Activate Zone combo
         window["combo_zone"].update(disabled=False)
         globalState.isZoneComboEnabled = True
-    
+
     #######Define the behavior where zone has been selected
 
 
@@ -103,6 +104,14 @@ def onChange_Zone_Combo(e, values, window):
         if selectedJob == const.CONST_JOB_FARMER:
             window["combo_resource"].update(
                 disabled=False, values=const.CONST_ZONE_RESOURCES_FARMER_ASTRUB
+            )
+            globalState.isResourceComboEnabled = True
+
+    if selectedZone == const.CONST_ZONE_WILD_ESTATE:
+        # MINER
+        if selectedJob == const.CONST_JOB_MINER:
+            window["combo_resource"].update(
+                disabled=False, values=const.CONST_ZONE_RESOURCES_MINER_WILDESTATE
             )
             globalState.isResourceComboEnabled = True
 
@@ -133,9 +142,11 @@ def onChange_Key_Combo(e, values, window):
 
 def startSelectedScript():
     # Miner
+    zone = globalState.selectedZone
+    job = globalState.selectedJob
     if (
-        globalState.selectedJob == const.CONST_JOB_MINER
-        and globalState.selectedZone == const.CONST_ZONE_ASTRUB
+        job == const.CONST_JOB_MINER
+        and (zone == const.CONST_ZONE_ASTRUB or zone == const.CONST_ZONE_WILD_ESTATE)
         and globalState.selectedKey != None
     ):
         # Bind the action to a hotkey
