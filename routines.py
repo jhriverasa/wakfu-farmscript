@@ -150,7 +150,7 @@ def advanced_farming_actions():
     # Switch-like (by cases) treatment
     closestPoint = None  # Just a definition
     if len(seedsLocation) > 0 and len(resourceLocation) > 0:
-        if tossACoin(0.66):  # Gonna get resources  2 out 3 times
+        if tossACoin(0.33):  # Gonna get resources  2 out 3 times
             closestPoint = getClosestPoint(seedsLocation)
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
             findIconAndClick(
