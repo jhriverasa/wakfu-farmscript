@@ -8,7 +8,7 @@ class appState:
         self.selectedZone = None
         self.selectedResource = None
         self.selectedKey = None
-        self.status = cts.CONST_STATUS_WAITING
+        self.status = cts.STATUS_WAITING
         self.isStartButtonEnabled = False
         self.isStopButtonEnabled = False
         self.isZoneComboEnabled = False

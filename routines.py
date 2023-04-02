@@ -65,10 +65,10 @@ def moveAndClickLocation(x: int, y: int, button: str = "left", sleepTime: float 
     time.sleep(sleepTime)
 
 
-def findIconAndClick(iconPath: str, confidence: float = 0.97, duration: float = 0.1):
+def findIconAndClick(constIcon: str, confidence: float = 0.97, duration: float = 0.1):
     ret = False
     collectIconLocation = auto.locateCenterOnScreen(
-        const.ICONS_PATH + iconPath, confidence=confidence
+        const.ICONS_PATH + constIcon, confidence=confidence
     )
     if collectIconLocation != None:
         auto.moveTo(collectIconLocation.x, collectIconLocation.y)
@@ -80,9 +80,9 @@ def findIconAndClick(iconPath: str, confidence: float = 0.97, duration: float = 
 
 
 def getActionIconByResource(job: str, constResourceName: str, action: str):
-    if job == const.CONST_JOB_FARMER:
+    if job == const.JOB_FARMER:
         # actions for farmer: ["harvest", "seeds"]
-        return const.CONST_ICON_FOR_ACTIONS_FARMER.get(constResourceName).get(action)
+        return const.ICON_FOR_ACTIONS_FARMER.get(constResourceName).get(action)
 
 
 ########################################################################
@@ -98,7 +98,7 @@ def simple_mining_actions():
 
     # move pointer to mining icon and click again
     collectIconLocation = auto.locateCenterOnScreen(
-        const.ICONS_PATH + const.CONST_ICON_ACTION_MINING_HARVEST, confidence=0.97
+        const.ICONS_PATH + const.ICON_ACTION_MINING_HARVEST, confidence=0.97
     )
     if collectIconLocation != None:
         auto.moveTo(collectIconLocation.x, collectIconLocation.y)
@@ -122,7 +122,7 @@ def advanced_mining_actions():
         closestPoint = getClosestPoint(oreLocations)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
 
-        if not findIconAndClick(iconPath=const.CONST_ICON_ACTION_MINING_HARVEST):
+        if not findIconAndClick(constIcon=const.ICON_ACTION_MINING_HARVEST):
             print("Minning Icon not found")
     else:
         print("Resource not found")
@@ -149,39 +149,97 @@ def advanced_farming_actions():
 
     # Switch-like (by cases) treatment
     closestPoint = None  # Just a definition
-    if len(seedsLocation) > 0 and len(resourceLocation) > 0:
-        if tossACoin(0.33):  # Gonna get resources  2 out 3 times
+    totalSeedsFound = len(seedsLocation)
+    totalResourcesFound = len(resourceLocation)
+    if totalSeedsFound > 0 and totalResourcesFound > 0:
+        if tossACoin(0.5):
             closestPoint = getClosestPoint(seedsLocation)
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+            # This need to be tuned so that it has a balance point between seeds - resource
             findIconAndClick(
-                iconPath=getActionIconByResource(
-                    const.CONST_JOB_FARMER, selectedResource, "seeds"
+                constIcon=getActionIconByResource(
+                    const.JOB_FARMER,
+                    selectedResource,
+                    "harvest" if tossACoin(0.65) and totalSeedsFound > 1 else "seeds",
                 )
             )
         else:
             closestPoint = getClosestPoint(resourceLocation)
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
             findIconAndClick(
-                iconPath=getActionIconByResource(
-                    const.CONST_JOB_FARMER, selectedResource, "harvest"
+                constIcon=getActionIconByResource(
+                    const.JOB_FARMER, selectedResource, "harvest"
                 )
             )
-    elif len(seedsLocation) > 0 and len(resourceLocation) == 0:
+    elif totalSeedsFound > 0 and totalResourcesFound == 0:
         closestPoint = getClosestPoint(seedsLocation)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
         findIconAndClick(
-            iconPath=getActionIconByResource(
-                const.CONST_JOB_FARMER, selectedResource, "seeds"
+            constIcon=getActionIconByResource(
+                const.JOB_FARMER, selectedResource, "seeds"
             )
         )
-    elif len(seedsLocation) == 0 and len(resourceLocation) > 0:
+    elif totalSeedsFound == 0 and totalResourcesFound > 0:
         closestPoint = getClosestPoint(resourceLocation)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
         findIconAndClick(
-            iconPath=getActionIconByResource(
-                const.CONST_JOB_FARMER, selectedResource, "harvest"
+            constIcon=getActionIconByResource(
+                const.JOB_FARMER, selectedResource, "harvest"
             )
         )
+        print("Seeds Not Found")
+    else:
+        print("Resource not found")
+
+
+def advanced_herbalist_actions():
+    selectedResource = globalState.selectedResource
+    # Check if harvesting seeds is possible
+    seedsLocation = auto.locateAllOnScreen(
+        const.HERBALIST_RES_PATH
+        + getImgNameFromResourceConst(selectedResource, subcategory="seed"),
+        confidence=0.80,  # Need to be tuned
+    )
+
+    # Locate all resources
+    resourceLocation = auto.locateAllOnScreen(
+        const.HERBALIST_RES_PATH + getImgNameFromResourceConst(selectedResource),
+        confidence=0.80,  # Need to be tuned
+    )
+
+    # Cast Generator into a List
+    seedsLocation = list(seedsLocation)
+    resourceLocation = list(resourceLocation)
+
+    # Switch-like (by cases) treatment
+    closestPoint = None  # Just a definition
+    totalSeedsFound = len(seedsLocation)
+    totalResourcesFound = len(resourceLocation)
+    if totalSeedsFound > 0 and totalResourcesFound > 0:
+        if tossACoin(0.66):
+            closestPoint = getClosestPoint(seedsLocation)
+            moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+            # This need to be tuned so that it has a balance point between seeds - resource
+            findIconAndClick(
+                # 32% of chance of not getting seeds but get the resource
+                constIcon=(
+                    const.ICON_ACTION_HERBALIST_CUT
+                    if tossACoin(0.25) and totalSeedsFound > 1
+                    else const.ICON_ACTION_HERBALIST_SEEDS
+                )
+            )
+        else:
+            closestPoint = getClosestPoint(resourceLocation)
+            moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+            findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_CUT))
+    elif totalSeedsFound > 0 and totalResourcesFound == 0:
+        closestPoint = getClosestPoint(seedsLocation)
+        moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+        findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_SEEDS))
+    elif totalSeedsFound == 0 and totalResourcesFound > 0:
+        closestPoint = getClosestPoint(resourceLocation)
+        moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+        findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_CUT))
         print("Seeds Not Found")
     else:
         print("Resource not found")
