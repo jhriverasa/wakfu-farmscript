@@ -19,7 +19,6 @@ hotkeyListener = hk.HotkeyListener(globalHotkeyManager.runHotkeyCallback)
 
 
 def onClick_Start_Button(e, values, window):
-    
     # is everything selected?
     if (
         globalState.selectedJob != None
@@ -47,8 +46,9 @@ def onClick_Start_Button(e, values, window):
         # enable stop
         window["button_stop"].update(disabled=False)
         globalState.isStopButtonEnabled = True
-        
+
     print(globalState)
+
 
 def onClick_Stop_Button(e, values, window):
     hotkeyListener.stopScript()
@@ -106,7 +106,7 @@ def onChange_Zone_Combo(e, values, window):
                 disabled=False, values=const.ZONE_RESOURCES_FARMER_ASTRUB
             )
             globalState.isResourceComboEnabled = True
-        
+
         # HERBALIST
         if selectedJob == const.JOB_HERBALIST:
             window["combo_resource"].update(
@@ -114,11 +114,21 @@ def onChange_Zone_Combo(e, values, window):
             )
             globalState.isResourceComboEnabled = True
 
+    # WILD_ESTATE ZONE
     if selectedZone == const.ZONE_WILD_ESTATE:
         # MINER
         if selectedJob == const.JOB_MINER:
             window["combo_resource"].update(
                 disabled=False, values=const.ZONE_RESOURCES_MINER_WILDESTATE
+            )
+            globalState.isResourceComboEnabled = True
+
+    # BRAKMAR ZONE
+    if selectedZone == const.ZONE_BRAKMAR:
+        # MINER
+        if selectedJob == const.JOB_MINER:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_MINER_BRAKMAR
             )
             globalState.isResourceComboEnabled = True
 
@@ -153,7 +163,11 @@ def startSelectedScript():
     job = globalState.selectedJob
     if (
         job == const.JOB_MINER
-        and (zone == const.ZONE_ASTRUB or zone == const.ZONE_WILD_ESTATE)
+        and (
+            zone == const.ZONE_ASTRUB
+            or zone == const.ZONE_WILD_ESTATE
+            or zone == const.ZONE_BRAKMAR
+        )
         and globalState.selectedKey != None
     ):
         # Bind the action to a hotkey
@@ -173,7 +187,7 @@ def startSelectedScript():
             globalState.selectedKey,
             routines.advanced_farming_actions,
         )
-    
+
     # Herbalist
     if (
         globalState.selectedJob == const.JOB_HERBALIST
@@ -185,4 +199,3 @@ def startSelectedScript():
             globalState.selectedKey,
             routines.advanced_herbalist_actions,
         )
-

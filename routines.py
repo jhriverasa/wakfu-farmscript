@@ -198,13 +198,13 @@ def advanced_herbalist_actions():
     seedsLocation = auto.locateAllOnScreen(
         const.HERBALIST_RES_PATH
         + getImgNameFromResourceConst(selectedResource, subcategory="seed"),
-        confidence=0.80,  # Need to be tuned
+        confidence=0.82,  # Need to be tuned
     )
 
     # Locate all resources
     resourceLocation = auto.locateAllOnScreen(
         const.HERBALIST_RES_PATH + getImgNameFromResourceConst(selectedResource),
-        confidence=0.80,  # Need to be tuned
+        confidence=0.82,  # Need to be tuned
     )
 
     # Cast Generator into a List
@@ -220,11 +220,14 @@ def advanced_herbalist_actions():
             closestPoint = getClosestPoint(seedsLocation)
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
             # This need to be tuned so that it has a balance point between seeds - resource
+            prob = tossACoin(0.25)
+            print('found seeds and resource: ' + ('cutting...' if prob else 'getting seeds...'))
             findIconAndClick(
                 # 32% of chance of not getting seeds but get the resource
+                
                 constIcon=(
                     const.ICON_ACTION_HERBALIST_CUT
-                    if tossACoin(0.25) and totalSeedsFound > 1
+                    if prob and totalSeedsFound > 1
                     else const.ICON_ACTION_HERBALIST_SEEDS
                 )
             )
@@ -232,14 +235,16 @@ def advanced_herbalist_actions():
             closestPoint = getClosestPoint(resourceLocation)
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
             findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_CUT))
+            print( 'found seeeds and resourcer, trying to cut...')
     elif totalSeedsFound > 0 and totalResourcesFound == 0:
         closestPoint = getClosestPoint(seedsLocation)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
         findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_SEEDS))
+        print('only found seeds')
     elif totalSeedsFound == 0 and totalResourcesFound > 0:
         closestPoint = getClosestPoint(resourceLocation)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
         findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_CUT))
-        print("Seeds Not Found")
+        print("Seeds were not found")
     else:
         print("Resource not found")
