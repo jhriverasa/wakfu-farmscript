@@ -90,21 +90,16 @@ def getActionIconByResource(job: str, constResourceName: str, action: str):
 ########################################################################
 
 
-###-----------------Simple Mining-------------------->
+###-----------------Simple Routines-------------------->
 def simple_mining_actions():
-    # Simple right click
-    auto.rightClick(interval=0.125)
-    time.sleep(0.2)
+    auto.rightClick(duration=0.2)
+    wasIconFound= findIconAndClick(constIcon=const.ICON_ACTION_MINING_HARVEST)
+    print("Found Minning icon" if wasIconFound else "Icon was not found")
 
-    # move pointer to mining icon and click again
-    collectIconLocation = auto.locateCenterOnScreen(
-        const.ICONS_PATH + const.ICON_ACTION_MINING_HARVEST, confidence=0.97
-    )
-    if collectIconLocation != None:
-        auto.moveTo(collectIconLocation.x, collectIconLocation.y)
-        auto.leftClick(duration=0.1)
-    else:
-        print("Collect Icon not found")
+def simple_trapper_actions():
+    auto.rightClick(duration=0.2)
+    wasIconFound= findIconAndClick(constIcon=const.ICON_ACTION_TRAPPER_SEEDS)
+    print("Found Trapper Icon for harvesting seeds" if wasIconFound else "Icon was not found")
 
 
 ###----------------Advanced Mining------------------------>
@@ -221,10 +216,12 @@ def advanced_herbalist_actions():
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
             # This need to be tuned so that it has a balance point between seeds - resource
             prob = tossACoin(0.25)
-            print('found seeds and resource: ' + ('cutting...' if prob else 'getting seeds...'))
+            print(
+                "found seeds and resource: "
+                + ("cutting..." if prob else "getting seeds...")
+            )
             findIconAndClick(
                 # 32% of chance of not getting seeds but get the resource
-                
                 constIcon=(
                     const.ICON_ACTION_HERBALIST_CUT
                     if prob and totalSeedsFound > 1
@@ -235,12 +232,12 @@ def advanced_herbalist_actions():
             closestPoint = getClosestPoint(resourceLocation)
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
             findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_CUT))
-            print( 'found seeeds and resourcer, trying to cut...')
+            print("found seeeds and resourcer, trying to cut...")
     elif totalSeedsFound > 0 and totalResourcesFound == 0:
         closestPoint = getClosestPoint(seedsLocation)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
         findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_SEEDS))
-        print('only found seeds')
+        print("only found seeds")
     elif totalSeedsFound == 0 and totalResourcesFound > 0:
         closestPoint = getClosestPoint(resourceLocation)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")

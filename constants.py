@@ -142,6 +142,7 @@ ICON_ACTION_FARMING_REAP = "reap-icon.png"
 ICON_ACTION_MINING_HARVEST = "mine-icon.png"
 ICON_ACTION_HERBALIST_SEEDS = "harvest-icon.png"
 ICON_ACTION_HERBALIST_CUT = "cut-icon.png"
+ICON_ACTION_TRAPPER_SEEDS = "trapper-seed-icon.png"
 
 
 ## Available Actions by resource

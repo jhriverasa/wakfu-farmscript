@@ -25,7 +25,7 @@ def onClick_Start_Button(e, values, window):
         and globalState.selectedResource != None
         and globalState.selectedZone != None
         and globalState.selectedKey != None
-    ):
+    ) or globalState.selectedJob == const.JOB_TRAPPER:  #trapper does not require zone since it is really simple
         hotkeyListener.startScript()
         newStatus = const.STATUS_ACTIVE
 
@@ -83,11 +83,19 @@ def onClick_Stop_Button(e, values, window):
 def onChange_Job_Combo(e, values, window):
     selectedJob = values["combo_job"]
     globalState.selectedJob = selectedJob
-    if globalState.selectedZone == None:  # Activate Zone combo
-        window["combo_zone"].update(disabled=False)
-        globalState.isZoneComboEnabled = True
+
+    # Trapper job is about collecting seeds, one approach would be take a portion of every monster image
+    # this is reaaaaaally expensive in terms of time, so I'll take a simpler approach for now ()
+    if selectedJob == const.JOB_TRAPPER:
+        # Here any combo shouldn't be enabled but key_combo
+        window["combo_key"].update(disabled=False)
+        globalState.isKeyComboEnabled = True
     else:
-        loadResourceValuesBasedOnZoneAndJob(window)
+        if globalState.selectedZone == None:  # Activate Zone combo
+            window["combo_zone"].update(disabled=False)
+            globalState.isZoneComboEnabled = True
+        else:
+            loadResourceValuesBasedOnZoneAndJob(window)
 
     #######Define the behavior where zone has been selected
 
@@ -171,6 +179,14 @@ def startSelectedScript():
         globalHotkeyManager.setBinding(
             globalState.selectedKey,
             routines.advanced_herbalist_actions,
+        )
+
+    # Trapper
+    if job == const.JOB_TRAPPER:
+        # Bind the action to a hotkey
+        globalHotkeyManager.setBinding(
+            globalState.selectedKey,
+            routines.simple_trapper_actions,
         )
 
 
