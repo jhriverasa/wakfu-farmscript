@@ -43,6 +43,9 @@ def onClick_Start_Button(e, values, window):
         window["button_start"].update(disabled=True)
         globalState.isStartButtonEnabled = False
 
+        # disable job picker
+        window["combo_job"].update(disabled=True)
+
         # enable stop
         window["button_stop"].update(disabled=False)
         globalState.isStopButtonEnabled = True
@@ -66,6 +69,9 @@ def onClick_Stop_Button(e, values, window):
     window["button_start"].update(disabled=False)
     globalState.isStartButtonEnabled = True
 
+    # enable job picker
+    window["combo_job"].update(disabled=False)
+
     # enable key combo
     window["combo_key"].update(disabled=False)
     globalState.isKeyComboEnabled = True
@@ -80,6 +86,9 @@ def onChange_Job_Combo(e, values, window):
     if globalState.selectedZone == None:  # Activate Zone combo
         window["combo_zone"].update(disabled=False)
         globalState.isZoneComboEnabled = True
+    else:
+        loadResourceValuesBasedOnZoneAndJob(window)
+       
 
     #######Define the behavior where zone has been selected
 
@@ -89,65 +98,8 @@ def onChange_Zone_Combo(e, values, window):
     globalState.selectedZone = selectedZone
     selectedJob = globalState.selectedJob
 
-    ## This should activate resource-combo and load values depending on selected zone
-
-    # ASTRUB ZONE
-    if selectedZone == const.ZONE_ASTRUB:
-        # MINER
-        if selectedJob == const.JOB_MINER:
-            window["combo_resource"].update(
-                disabled=False, values=const.ZONE_RESOURCES_MINER_ASTRUB
-            )
-            globalState.isResourceComboEnabled = True
-
-        # FARMER
-        if selectedJob == const.JOB_FARMER:
-            window["combo_resource"].update(
-                disabled=False, values=const.ZONE_RESOURCES_FARMER_ASTRUB
-            )
-            globalState.isResourceComboEnabled = True
-
-        # HERBALIST
-        if selectedJob == const.JOB_HERBALIST:
-            window["combo_resource"].update(
-                disabled=False, values=const.ZONE_RESOURCES_HERBALIST_ASTRUB
-            )
-            globalState.isResourceComboEnabled = True
+    loadResourceValuesBasedOnZoneAndJob(window)
     
-    # AMAKNA ZONE
-    if selectedZone == const.ZONE_AMAKNA:
-        # FARMER
-        if selectedJob == const.JOB_FARMER:
-            window["combo_resource"].update(
-                disabled=False, values=const.ZONE_RESOURCES_FARMER_AMAKNA
-            )
-            globalState.isResourceComboEnabled = True
-
-         # HERBALIST
-        if selectedJob == const.JOB_HERBALIST:
-            window["combo_resource"].update(
-                disabled=False, values=const.ZONE_RESOURCES_HERBALIST_AMAKNA
-            )
-            globalState.isResourceComboEnabled = True
-
-    # WILD_ESTATE ZONE
-    if selectedZone == const.ZONE_WILD_ESTATE:
-        # MINER
-        if selectedJob == const.JOB_MINER:
-            window["combo_resource"].update(
-                disabled=False, values=const.ZONE_RESOURCES_MINER_WILDESTATE
-            )
-            globalState.isResourceComboEnabled = True
-
-    # BRAKMAR ZONE
-    if selectedZone == const.ZONE_BRAKMAR:
-        # MINER
-        if selectedJob == const.JOB_MINER:
-            window["combo_resource"].update(
-                disabled=False, values=const.ZONE_RESOURCES_MINER_BRAKMAR
-            )
-            globalState.isResourceComboEnabled = True
-
 
 
 def onChange_Resource_Combo(e, values, window):
@@ -156,6 +108,7 @@ def onChange_Resource_Combo(e, values, window):
     if globalState.selectedKey == None:  # Activate Key combo
         window["combo_key"].update(disabled=False)
         globalState.isKeyComboEnabled = True
+        
 
 
 def onChange_Key_Combo(e, values, window):
@@ -200,7 +153,7 @@ def startSelectedScript():
         and globalState.selectedKey != None
     ):
         # Bind the action to a hotkey
-        
+
         globalHotkeyManager.setBinding(
             globalState.selectedKey,
             routines.advanced_farming_actions,
@@ -217,3 +170,66 @@ def startSelectedScript():
             globalState.selectedKey,
             routines.advanced_herbalist_actions,
         )
+
+
+def loadResourceValuesBasedOnZoneAndJob(window):
+    ## This should activate resource-combo and load values depending on selected zone
+    zone = globalState.selectedZone
+    job = globalState.selectedJob
+
+    # ASTRUB ZONE
+    if zone == const.ZONE_ASTRUB:
+        # MINER
+        if job == const.JOB_MINER:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_MINER_ASTRUB
+            )
+            globalState.isResourceComboEnabled = True
+
+        # FARMER
+        if job == const.JOB_FARMER:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_FARMER_ASTRUB
+            )
+            globalState.isResourceComboEnabled = True
+
+        # HERBALIST
+        if job == const.JOB_HERBALIST:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_HERBALIST_ASTRUB
+            )
+            globalState.isResourceComboEnabled = True
+
+    # AMAKNA ZONE
+    if zone == const.ZONE_AMAKNA:
+        # FARMER
+        if job == const.JOB_FARMER:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_FARMER_AMAKNA
+            )
+            globalState.isResourceComboEnabled = True
+
+        # HERBALIST
+        if job == const.JOB_HERBALIST:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_HERBALIST_AMAKNA
+            )
+            globalState.isResourceComboEnabled = True
+
+    # WILD_ESTATE ZONE
+    if zone == const.ZONE_WILD_ESTATE:
+        # MINER
+        if job == const.JOB_MINER:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_MINER_WILDESTATE
+            )
+            globalState.isResourceComboEnabled = True
+
+    # BRAKMAR ZONE
+    if zone == const.ZONE_BRAKMAR:
+        # MINER
+        if job == const.JOB_MINER:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_MINER_BRAKMAR
+            )
+            globalState.isResourceComboEnabled = True
