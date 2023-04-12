@@ -88,7 +88,6 @@ def onChange_Job_Combo(e, values, window):
         globalState.isZoneComboEnabled = True
     else:
         loadResourceValuesBasedOnZoneAndJob(window)
-       
 
     #######Define the behavior where zone has been selected
 
@@ -99,7 +98,6 @@ def onChange_Zone_Combo(e, values, window):
     selectedJob = globalState.selectedJob
 
     loadResourceValuesBasedOnZoneAndJob(window)
-    
 
 
 def onChange_Resource_Combo(e, values, window):
@@ -108,7 +106,6 @@ def onChange_Resource_Combo(e, values, window):
     if globalState.selectedKey == None:  # Activate Key combo
         window["combo_key"].update(disabled=False)
         globalState.isKeyComboEnabled = True
-        
 
 
 def onChange_Key_Combo(e, values, window):
@@ -162,7 +159,12 @@ def startSelectedScript():
     # Herbalist
     if (
         job == const.JOB_HERBALIST
-        and (zone == const.ZONE_ASTRUB or zone == const.ZONE_AMAKNA)
+        and (
+            zone == const.ZONE_ASTRUB
+            or zone == const.ZONE_AMAKNA
+            or zone == const.ZONE_WILD_ESTATE
+            or zone == const.ZONE_SUFOKIA
+        )
         and globalState.selectedKey != None
     ):
         # Bind the action to a hotkey
@@ -225,11 +227,27 @@ def loadResourceValuesBasedOnZoneAndJob(window):
             )
             globalState.isResourceComboEnabled = True
 
+        # HERBALIST
+        if job == const.JOB_HERBALIST:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_HERBALIST_WILDESTATE
+            )
+            globalState.isResourceComboEnabled = True
+
     # BRAKMAR ZONE
     if zone == const.ZONE_BRAKMAR:
         # MINER
         if job == const.JOB_MINER:
             window["combo_resource"].update(
                 disabled=False, values=const.ZONE_RESOURCES_MINER_BRAKMAR
+            )
+            globalState.isResourceComboEnabled = True
+
+    # SUFOKIA ZONE
+    if zone == const.ZONE_SUFOKIA:
+        # HERBALIST
+        if job == const.JOB_HERBALIST:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_HERBALIST_SUFOKIA
             )
             globalState.isResourceComboEnabled = True
