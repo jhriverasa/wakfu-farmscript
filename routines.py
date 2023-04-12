@@ -93,13 +93,16 @@ def getActionIconByResource(job: str, constResourceName: str, action: str):
 ###-----------------Simple Routines-------------------->
 def simple_mining_actions():
     auto.rightClick(duration=0.2)
-    wasIconFound= findIconAndClick(constIcon=const.ICON_ACTION_MINING_HARVEST)
+    wasIconFound = findIconAndClick(constIcon=const.ICON_ACTION_MINING_HARVEST)
     print("Found Minning icon" if wasIconFound else "Icon was not found")
+
 
 def simple_trapper_actions():
     auto.rightClick(duration=0.2)
-    wasIconFound= findIconAndClick(constIcon=const.ICON_ACTION_TRAPPER_SEEDS)
-    print("Found Trapper Icon for harvesting seeds" if wasIconFound else "Icon was not found")
+    if tossACoin(0.75):
+        findIconAndClick(constIcon=const.ICON_ACTION_FARMING_SEEDS)
+    else:
+        findIconAndClick(constIcon=const.ICON_ACTION_TRAPPER_SEEDS)
 
 
 ###----------------Advanced Mining------------------------>
