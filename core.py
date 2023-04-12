@@ -123,6 +123,13 @@ def onChange_Zone_Combo(e, values, window):
             )
             globalState.isResourceComboEnabled = True
 
+         # HERBALIST
+        if selectedJob == const.JOB_HERBALIST:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_HERBALIST_AMAKNA
+            )
+            globalState.isResourceComboEnabled = True
+
     # WILD_ESTATE ZONE
     if selectedZone == const.ZONE_WILD_ESTATE:
         # MINER
@@ -188,8 +195,8 @@ def startSelectedScript():
 
     # Farmer
     if (
-        globalState.selectedJob == const.JOB_FARMER
-        and (globalState.selectedZone == const.ZONE_ASTRUB or zone == const.ZONE_AMAKNA)
+        job == const.JOB_FARMER
+        and (zone == const.ZONE_ASTRUB or zone == const.ZONE_AMAKNA)
         and globalState.selectedKey != None
     ):
         # Bind the action to a hotkey
@@ -201,8 +208,8 @@ def startSelectedScript():
 
     # Herbalist
     if (
-        globalState.selectedJob == const.JOB_HERBALIST
-        and globalState.selectedZone == const.ZONE_ASTRUB
+        job == const.JOB_HERBALIST
+        and (zone == const.ZONE_ASTRUB or zone == const.ZONE_AMAKNA)
         and globalState.selectedKey != None
     ):
         # Bind the action to a hotkey
