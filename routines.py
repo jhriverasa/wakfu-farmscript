@@ -99,7 +99,7 @@ def simple_mining_actions():
 
 def simple_trapper_actions():
     auto.rightClick(duration=0.2)
-    if tossACoin(0.75):
+    if tossACoin(0.75): ## 75% of times 
         findIconAndClick(constIcon=const.ICON_ACTION_FARMING_SEEDS)
     else:
         findIconAndClick(constIcon=const.ICON_ACTION_TRAPPER_SEEDS)
