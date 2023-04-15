@@ -99,13 +99,13 @@ def simple_mining_actions():
 
 def simple_trapper_actions():
     auto.rightClick(duration=0.2)
-    if tossACoin(0.75): ## 75% of times 
+    if tossACoin(0.75):  ## 75% of times
         findIconAndClick(constIcon=const.ICON_ACTION_FARMING_SEEDS)
     else:
         findIconAndClick(constIcon=const.ICON_ACTION_TRAPPER_SEEDS)
 
 
-###----------------Advanced Mining------------------------>
+###----------------Advanced Routines------------------------>
 def advanced_mining_actions():
     # Locate all ores
     oreLocations = auto.locateAllOnScreen(
@@ -124,6 +124,40 @@ def advanced_mining_actions():
             print("Minning Icon not found")
     else:
         print("Resource not found")
+
+
+def advanced_fisherman_actions():
+    accuracy = 0.88
+
+    # Locate all
+    fishLocationsPos1 = auto.locateAllOnScreen(
+        const.FISHERMAN_RES_PATH + "fish1.png",
+        confidence=accuracy,
+    )
+    fishLocationsPos2 = auto.locateAllOnScreen(
+        const.FISHERMAN_RES_PATH + "fish2.png",
+        confidence=accuracy,
+    )
+    fishLocationsPos3 = auto.locateAllOnScreen(
+        const.FISHERMAN_RES_PATH + "fish3.png",
+        confidence=accuracy,
+    )
+    fishLocationsPos4 = auto.locateAllOnScreen(
+        const.FISHERMAN_RES_PATH + "fish4.png",
+        confidence=accuracy,
+    )
+    fishLocations = (
+        list(fishLocationsPos1) + list(fishLocationsPos2) + list(fishLocationsPos3) + list(fishLocationsPos4)
+    )
+
+    if len(fishLocations) > 0:
+        closestPoint = getClosestPoint(fishLocations)
+        moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+
+        if not findIconAndClick(constIcon=const.ICON_ACTION_FISHERMAN_FISH):
+            print("Fishing Icon not found")
+    else:
+        print("Fishes not found")
 
 
 def advanced_farming_actions():

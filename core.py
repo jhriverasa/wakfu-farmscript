@@ -25,7 +25,10 @@ def onClick_Start_Button(e, values, window):
         and globalState.selectedResource != None
         and globalState.selectedZone != None
         and globalState.selectedKey != None
-    ) or globalState.selectedJob == const.JOB_TRAPPER:  #trapper does not require zone since it is really simple
+    ) or (  # trapper/fisherman does not require zone since they're really simple
+        globalState.selectedJob == const.JOB_TRAPPER
+        or globalState.selectedJob == const.JOB_FISHERMAN
+    ):
         hotkeyListener.startScript()
         newStatus = const.STATUS_ACTIVE
 
@@ -85,8 +88,8 @@ def onChange_Job_Combo(e, values, window):
     globalState.selectedJob = selectedJob
 
     # Trapper job is about collecting seeds, one approach would be take a portion of every monster image
-    # this is reaaaaaally expensive in terms of time, so I'll take a simpler approach for now ()
-    if selectedJob == const.JOB_TRAPPER:
+    # this is reaaaaaally expensive in terms of time, so I'll take a simpler approach for now
+    if selectedJob == const.JOB_TRAPPER or selectedJob == const.JOB_FISHERMAN:
         # Here any combo shouldn't be enabled but key_combo
         window["combo_key"].update(disabled=False)
         globalState.isKeyComboEnabled = True
@@ -187,6 +190,14 @@ def startSelectedScript():
         globalHotkeyManager.setBinding(
             globalState.selectedKey,
             routines.simple_trapper_actions,
+        )
+
+    # Fisherman
+    if job == const.JOB_FISHERMAN:
+        # Bind the action to a hotkey
+        globalHotkeyManager.setBinding(
+            globalState.selectedKey,
+            routines.advanced_fisherman_actions,
         )
 
 

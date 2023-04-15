@@ -6,7 +6,7 @@ MINER_RES_PATH = IMG_PATH + "miner_res\\"
 ICONS_PATH = IMG_PATH + "icons\\"
 FARMER_RES_PATH = IMG_PATH + "farmer_res\\"
 HERBALIST_RES_PATH = IMG_PATH + "herbalist_res\\"
-
+FISHERMAN_RES_PATH = IMG_PATH + "fisherman_res\\"
 
 # GUI Constants
 GUI_FRAME_SELECTJOBANDZONE_TEXT = "< Select profession and Zone >"
@@ -143,6 +143,7 @@ ICON_ACTION_MINING_HARVEST = "mine-icon.png"
 ICON_ACTION_HERBALIST_SEEDS = "harvest-icon.png"
 ICON_ACTION_HERBALIST_CUT = "cut-icon.png"
 ICON_ACTION_TRAPPER_SEEDS = "trapper-seed-icon.png"
+ICON_ACTION_FISHERMAN_FISH = "hook-icon.png"
 
 
 ## Available Actions by resource
