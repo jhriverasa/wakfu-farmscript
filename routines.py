@@ -21,6 +21,7 @@ screenResX, screenResY = auto.size()
 def getClosestPoint(pointlist):
     ##Since the character is always in the "center of the screen" when you're moving
     ## is possible to approximate the distance to resource and improve the harvesting route
+
     # A long distance (distance of the diagonal in pixels)
     shortestDistance = math.dist([0, screenResY], [screenResX, 0])
     closestPoint = None
@@ -147,7 +148,10 @@ def advanced_fisherman_actions():
         confidence=accuracy,
     )
     fishLocations = (
-        list(fishLocationsPos1) + list(fishLocationsPos2) + list(fishLocationsPos3) + list(fishLocationsPos4)
+        list(fishLocationsPos1)
+        + list(fishLocationsPos2)
+        + list(fishLocationsPos3)
+        + list(fishLocationsPos4)
     )
 
     if len(fishLocations) > 0:
@@ -224,6 +228,66 @@ def advanced_farming_actions():
         print("Resource not found")
 
 
+def advanced_lumberjack_actions():
+    # Some trees has an aditional resource (for instance apples from Api tree) in its mature state
+    # So this should check if the aditional resource is available by checking the "get icon"
+
+    selectedResource = globalState.selectedResource
+    # Check the mature version
+    matureTreeLocation = auto.locateAllOnScreen(
+        const.LUMBERJACK_RES_PATH
+        + getImgNameFromResourceConst(selectedResource, subcategory="mature"),
+        confidence=0.88,  # Need to be tuned
+    )
+
+    # Locate all resources
+    littleTreeLocation = auto.locateAllOnScreen(
+        const.LUMBERJACK_RES_PATH + getImgNameFromResourceConst(selectedResource),
+        confidence=0.88,  # Need to be tuned
+    )
+
+    # Cast Generator into a List
+    matureTreeLocation = list(matureTreeLocation)
+    littleTreeLocation = list(littleTreeLocation)
+
+    # Switch-like (by cases) treatment
+    closestPoint = None  # Just a definition
+    totalMatureTreesFound = len(matureTreeLocation)
+    totalLittleTreesFound = len(littleTreeLocation)
+    if totalMatureTreesFound > 0 and totalLittleTreesFound > 0:
+        if tossACoin(0.7):
+            closestPoint = getClosestPoint(matureTreeLocation)
+            moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+            # try to get secondary resource first
+            gotSecondaryRes = findIconAndClick(
+                constIcon=const.ICON_ACTION_LUMBERJACK_GET
+            )
+            if not gotSecondaryRes:
+                findIconAndClick(constIcon=const.ICON_ACTION_LUMBERJACK_CUT_TREE)
+        else:
+            closestPoint = getClosestPoint(littleTreeLocation)
+            moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+            # get cuttings
+            findIconAndClick(constIcon=const.ICON_ACTION_FARMING_CUT)
+
+    elif totalMatureTreesFound > 0 and totalLittleTreesFound == 0:
+        closestPoint = getClosestPoint(matureTreeLocation)
+        moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+        # try to get secondary resource first
+        gotSecondaryRes = findIconAndClick(constIcon=const.ICON_ACTION_LUMBERJACK_GET)
+        if not gotSecondaryRes:
+            findIconAndClick(constIcon=const.ICON_ACTION_LUMBERJACK_CUT_TREE)
+
+    elif totalMatureTreesFound == 0 and totalLittleTreesFound > 0:
+        closestPoint = getClosestPoint(littleTreeLocation)
+        moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
+        # get cuttings
+        findIconAndClick(constIcon=const.ICON_ACTION_FARMING_CUT)
+        print("Cuttings Not Found")
+    else:
+        print("Lumberjack Res not found")
+
+
 def advanced_herbalist_actions():
     selectedResource = globalState.selectedResource
     # Check if harvesting seeds is possible
@@ -281,4 +345,4 @@ def advanced_herbalist_actions():
         findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_CUT))
         print("Seeds were not found")
     else:
-        print("Resource not found")
+        print("Herbalist Resource not found")

@@ -184,6 +184,18 @@ def startSelectedScript():
             routines.advanced_herbalist_actions,
         )
 
+    # Lumberjack
+    if (
+        job == const.JOB_LUMBERJACK
+        and (zone == const.ZONE_ASTRUB or zone == const.ZONE_SUFOKIA)
+        and globalState.selectedKey != None
+    ):
+        # Bind the action to a hotkey
+        globalHotkeyManager.setBinding(
+            globalState.selectedKey,
+            routines.advanced_lumberjack_actions,
+        )
+
     # Trapper
     if job == const.JOB_TRAPPER:
         # Bind the action to a hotkey
@@ -226,6 +238,13 @@ def loadResourceValuesBasedOnZoneAndJob(window):
         if job == const.JOB_HERBALIST:
             window["combo_resource"].update(
                 disabled=False, values=const.ZONE_RESOURCES_HERBALIST_ASTRUB
+            )
+            globalState.isResourceComboEnabled = True
+
+        # LUMBERJACK
+        if job == const.JOB_LUMBERJACK:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_LUMBERJACK_ASTRUB
             )
             globalState.isResourceComboEnabled = True
 
@@ -276,5 +295,12 @@ def loadResourceValuesBasedOnZoneAndJob(window):
         if job == const.JOB_HERBALIST:
             window["combo_resource"].update(
                 disabled=False, values=const.ZONE_RESOURCES_HERBALIST_SUFOKIA
+            )
+            globalState.isResourceComboEnabled = True
+
+        # LUMBERJACK
+        if job == const.JOB_LUMBERJACK:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_LUMBERJACK_SUFOKIA
             )
             globalState.isResourceComboEnabled = True
