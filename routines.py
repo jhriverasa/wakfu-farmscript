@@ -229,6 +229,9 @@ def advanced_farming_actions():
 
 
 def advanced_lumberjack_actions():
+    # TODO Trees change its model so resource images like  Birch and Boabob do not take this into account, Update for
+    # more universal image or design a strategy to contemplate this possibility
+
     # Some trees has an aditional resource (for instance apples from Api tree) in its mature state
     # So this should check if the aditional resource is available by checking the "get icon"
 
