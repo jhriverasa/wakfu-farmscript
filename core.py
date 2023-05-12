@@ -187,7 +187,9 @@ def startSelectedScript():
     # Lumberjack
     if (
         job == const.JOB_LUMBERJACK
-        and (zone == const.ZONE_ASTRUB or zone == const.ZONE_SUFOKIA)
+        and (
+            zone == const.ZONE_ASTRUB or zone == const.ZONE_SUFOKIA or const.ZONE_AMAKNA
+        )
         and globalState.selectedKey != None
     ):
         # Bind the action to a hotkey
@@ -261,6 +263,13 @@ def loadResourceValuesBasedOnZoneAndJob(window):
         if job == const.JOB_HERBALIST:
             window["combo_resource"].update(
                 disabled=False, values=const.ZONE_RESOURCES_HERBALIST_AMAKNA
+            )
+            globalState.isResourceComboEnabled = True
+
+        # LUMBERJACK
+        if job == const.JOB_LUMBERJACK:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_LUMBERJACK_AMAKNA
             )
             globalState.isResourceComboEnabled = True
 
