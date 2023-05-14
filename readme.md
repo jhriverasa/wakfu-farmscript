@@ -1,5 +1,5 @@
 
-# Wakfu Farmbot 0.1 (Still on development)
+# Wakfu Farmbot 0.1 (Still under development)
 
 ## Description
 A "quite simple" Python script that allows to detect and harvest resources on screen, not intended like a bot but a semi-automated tool that performs some clicks over the correct place.
