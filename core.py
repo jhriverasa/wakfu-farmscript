@@ -6,7 +6,7 @@ import farmScriptState as st
 # Create a shared (global) state
 globalState = st.appState()
 
-import routines  # routines depends on the global state so the import is after (FIX THIS AFTER)
+import routines  # routines depends on the global state so the import is after (FIX THIS LATER)
 
 
 # Instance HotkeyManager and its correponding Listener

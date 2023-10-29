@@ -66,7 +66,7 @@ def moveAndClickLocation(x: int, y: int, button: str = "left", sleepTime: float 
     time.sleep(sleepTime)
 
 
-def findIconAndClick(constIcon: str, confidence: float = 0.97, duration: float = 0.1):
+def findIconAndClick(constIcon: str, confidence: float = 0.94, duration: float = 0.1):
     ret = False
     collectIconLocation = auto.locateCenterOnScreen(
         const.ICONS_PATH + constIcon, confidence=confidence
