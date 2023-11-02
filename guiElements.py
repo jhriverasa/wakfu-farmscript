@@ -30,7 +30,8 @@ frameSelectJobAndZone = sg.Frame(
                     const.ZONE_AMAKNA,
                     const.ZONE_BRAKMAR,
                     const.ZONE_WILD_ESTATE,
-                    const.ZONE_SUFOKIA
+                    const.ZONE_SUFOKIA,
+                    const.ZONE_BONTA
                     
                 ],
                 readonly=True,

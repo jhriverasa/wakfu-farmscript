@@ -145,6 +145,7 @@ def startSelectedScript():
             zone == const.ZONE_ASTRUB
             or zone == const.ZONE_WILD_ESTATE
             or zone == const.ZONE_BRAKMAR
+            or zone == const.ZONE_BONTA
         )
         and globalState.selectedKey != None
     ):
@@ -311,5 +312,13 @@ def loadResourceValuesBasedOnZoneAndJob(window):
         if job == const.JOB_LUMBERJACK:
             window["combo_resource"].update(
                 disabled=False, values=const.ZONE_RESOURCES_LUMBERJACK_SUFOKIA
+            )
+            globalState.isResourceComboEnabled = True
+    
+    if zone == const.ZONE_BONTA:
+        # MINER
+        if job == const.JOB_MINER:
+            window["combo_resource"].update(
+                disabled = False, values = const.ZONE_RESOURCES_MINER_BONTA
             )
             globalState.isResourceComboEnabled = True
