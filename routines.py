@@ -170,13 +170,13 @@ def advanced_farming_actions():
     seedsLocation = auto.locateAllOnScreen(
         const.FARMER_RES_PATH
         + getImgNameFromResourceConst(selectedResource, subcategory="seed"),
-        confidence=0.80,  # Need to be tuned
+        confidence=0.75,  # Need to be tuned
     )
 
     # Locate all resources
     resourceLocation = auto.locateAllOnScreen(
         const.FARMER_RES_PATH + getImgNameFromResourceConst(selectedResource),
-        confidence=0.80,  # Need to be tuned
+        confidence=0.75,  # Need to be tuned
     )
 
     # Cast Generator into a List
