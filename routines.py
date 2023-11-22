@@ -66,7 +66,7 @@ def moveAndClickLocation(x: int, y: int, button: str = "left", sleepTime: float 
     time.sleep(sleepTime)
 
 
-def findIconAndClick(constIcon: str, confidence: float = 0.94, duration: float = 0.1):
+def findIconAndClick(constIcon: str, confidence: float = 0.96, duration: float = 0.1):
     ret = False
     collectIconLocation = auto.locateCenterOnScreen(
         const.ICONS_PATH + constIcon, confidence=confidence
@@ -100,10 +100,11 @@ def simple_mining_actions():
 
 def simple_trapper_actions():
     auto.rightClick(duration=0.2)
-    if tossACoin(0.75):  ## 75% of times
-        findIconAndClick(constIcon=const.ICON_ACTION_FARMING_SEEDS)
-    else:
+    if tossACoin(0.55):  ## 55% of times
         findIconAndClick(constIcon=const.ICON_ACTION_TRAPPER_SEEDS)
+    else:
+        findIconAndClick(constIcon=const.ICON_ACTION_FARMING_SEEDS)
+        
 
 
 ###----------------Advanced Routines------------------------>
@@ -340,7 +341,10 @@ def advanced_herbalist_actions():
     elif totalSeedsFound > 0 and totalResourcesFound == 0:
         closestPoint = getClosestPoint(seedsLocation)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
-        findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_SEEDS))
+        if tossACoin(0.66): 
+            findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_SEEDS))
+        else:
+            findIconAndClick(constIcon=(const.ICON_ACTION_HERBALIST_CUT))
         print("only found seeds")
     elif totalSeedsFound == 0 and totalResourcesFound > 0:
         closestPoint = getClosestPoint(resourceLocation)
