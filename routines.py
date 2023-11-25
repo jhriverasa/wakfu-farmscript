@@ -273,7 +273,8 @@ def advanced_lumberjack_actions():
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
             # try to get secondary resource first
             gotSecondaryRes = findIconAndClick(
-                constIcon=const.ICON_ACTION_LUMBERJACK_GET
+                constIcon=const.ICON_ACTION_LUMBERJACK_GET,
+                confidence = 0.93
             )
             if not gotSecondaryRes:
                 findIconAndClick(constIcon=const.ICON_ACTION_LUMBERJACK_CUT_TREE)
