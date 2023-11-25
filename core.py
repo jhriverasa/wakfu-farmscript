@@ -158,7 +158,11 @@ def startSelectedScript():
     # Farmer
     if (
         job == const.JOB_FARMER
-        and (zone == const.ZONE_ASTRUB or zone == const.ZONE_AMAKNA)
+        and (
+            zone == const.ZONE_ASTRUB
+            or zone == const.ZONE_AMAKNA
+            or zone == const.ZONE_SUFOKIA
+        )
         and globalState.selectedKey != None
     ):
         # Bind the action to a hotkey
@@ -301,6 +305,13 @@ def loadResourceValuesBasedOnZoneAndJob(window):
 
     # SUFOKIA ZONE
     if zone == const.ZONE_SUFOKIA:
+        # FARMER
+        if job == const.JOB_FARMER:
+            window["combo_resource"].update(
+                disabled=False, values=const.ZONE_RESOURCES_FARMER_SUFOKIA
+            )
+            globalState.isResourceComboEnabled = True
+
         # HERBALIST
         if job == const.JOB_HERBALIST:
             window["combo_resource"].update(
@@ -314,11 +325,11 @@ def loadResourceValuesBasedOnZoneAndJob(window):
                 disabled=False, values=const.ZONE_RESOURCES_LUMBERJACK_SUFOKIA
             )
             globalState.isResourceComboEnabled = True
-    
+
     if zone == const.ZONE_BONTA:
         # MINER
         if job == const.JOB_MINER:
             window["combo_resource"].update(
-                disabled = False, values = const.ZONE_RESOURCES_MINER_BONTA
+                disabled=False, values=const.ZONE_RESOURCES_MINER_BONTA
             )
             globalState.isResourceComboEnabled = True

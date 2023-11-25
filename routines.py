@@ -100,7 +100,7 @@ def simple_mining_actions():
 
 def simple_trapper_actions():
     auto.rightClick(duration=0.2)
-    if tossACoin(0.55):  ## 55% of times
+    if tossACoin(0.50):  ## 50% of times
         findIconAndClick(constIcon=const.ICON_ACTION_TRAPPER_SEEDS)
     else:
         findIconAndClick(constIcon=const.ICON_ACTION_FARMING_SEEDS)
@@ -189,42 +189,51 @@ def advanced_farming_actions():
     totalSeedsFound = len(seedsLocation)
     totalResourcesFound = len(resourceLocation)
     if totalSeedsFound > 0 and totalResourcesFound > 0:
+        #TODO bug -> baasically when detects both resources it DOES NOT detect 
+        # the correct icon ex: detects both, selects the closest point and tries to get seeds but this specific point DOES NOT HAVE seeds.
+
+        print("Found seeds and resource")
         if tossACoin(0.5):
             closestPoint = getClosestPoint(seedsLocation)
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
             # This need to be tuned so that it has a balance point between seeds - resource
             findIconAndClick(
+                confidence=0.93,
                 constIcon=getActionIconByResource(
                     const.JOB_FARMER,
                     selectedResource,
-                    "harvest" if tossACoin(0.65) and totalSeedsFound > 1 else "seeds",
+                    "harvest" if tossACoin(0.33) and totalSeedsFound > 1 else "seeds",
                 )
             )
         else:
             closestPoint = getClosestPoint(resourceLocation)
             moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
             findIconAndClick(
+                confidence=0.93,
                 constIcon=getActionIconByResource(
                     const.JOB_FARMER, selectedResource, "harvest"
                 )
             )
     elif totalSeedsFound > 0 and totalResourcesFound == 0:
+        print("Found seeds only")
         closestPoint = getClosestPoint(seedsLocation)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
         findIconAndClick(
+            confidence=0.93,
             constIcon=getActionIconByResource(
                 const.JOB_FARMER, selectedResource, "seeds"
             )
         )
     elif totalSeedsFound == 0 and totalResourcesFound > 0:
+        print("Found resources only")
         closestPoint = getClosestPoint(resourceLocation)
         moveAndClickLocation(closestPoint.x, closestPoint.y, "right")
         findIconAndClick(
+            confidence=0.93,
             constIcon=getActionIconByResource(
                 const.JOB_FARMER, selectedResource, "harvest"
             )
         )
-        print("Seeds Not Found")
     else:
         print("Resource not found")
 
