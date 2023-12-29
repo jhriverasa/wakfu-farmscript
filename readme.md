@@ -52,4 +52,4 @@ Every profession related to harvest/ get some stuff:
 **Detailed answer:** Tecnically, yes, but you have to reproduce all the conditions (environment) that is being used for development, not a big deal but at least 10 steps. 
 
 ## A demo!
-- Early December 2023
+- I've been really busy so I'm not sure when, but soon I guess.
