@@ -4,6 +4,8 @@ import guiElements
 
 import constants as const
 
+WINDOW_WIDTH = 400
+WINDOW_HEIGHT = 350
 
 # Setup the simple window
 sg.theme("Black")
@@ -19,9 +21,9 @@ layout = [
 
 # Create the Window
 window = sg.Window(
-    title="Wakfu FarmBot 0.1",
+    title= const.PROJECT_NAME + " " + const.VERSION,
     layout=layout,
-    size=(400, 350),
+    size=(WINDOW_WIDTH, WINDOW_HEIGHT),
     element_justification="c",
     element_padding=10,
 )

@@ -1,3 +1,6 @@
+PROJECT_NAME = "Wakfu FarmBot"
+VERSION = "0.2.1"
+
 TEXT_ALL = "All"
 
 # Path Constants

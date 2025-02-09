@@ -1,1 +1,1 @@
-python3 .\FarmScriptGUI.py
+python .\FarmScriptGUI.py
